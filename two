@@ -1,0 +1,20 @@
+function autofill_formulas_2() {
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('black_friday');
+  
+  var targetRow = 52;  // Starting row for column D
+  var sourceRow = 45;  // Starting row for column U
+  
+  // Loop to fill formulas 50 times
+  for (var i = 0; i < 50; i++) {
+    for (var j = 0; j < 5; j++) {
+      var formula = '=IF(U' + (sourceRow + j) + '="", "", IF(U' + (sourceRow + j) + '=0, "$0.00", U' + (sourceRow + j) + '-U' + (sourceRow + j - 1) + '))';
+      
+      // Set formula in target row (column D)
+      sheet.getRange(targetRow + j, 4).setFormula(formula);
+    }
+    
+    // Skip 2 rows after filling 5 rows
+    targetRow += 7; // Move 5 rows down + 2 rows skip
+    sourceRow += 6; // Increment sourceRow for next set of formulas
+  }
+}
